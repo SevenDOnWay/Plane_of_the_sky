@@ -1,0 +1,12 @@
+# ninja log v5
+1	6175	7693707564779163	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	83c374bdc8c8afbb
+42	6237	7693707567489729	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	63bf51f1aede44ed
+198	6265	7693707570410676	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	16c7435c9e4da861
+260	6268	7693707564194285	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	ca082bdc925eee43
+315	6272	7693707565640729	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	1096250419ed31ac
+923	6276	7693707569136421	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	977e9f2f16439e06
+24	6418	7693707574502472	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	a81c9112e33a6112
+3699	6718	7693707577681406	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	306d315c412e5d7
+991	7021	7693707581105500	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	ce2d1ffa95140b2
+6719	7209	7693707582750361	C:/Users/ngoda/Git/Plane_of_the_sky/Plane_of_the_sky/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/314r714s/obj/arm64-v8a/libswappywrapper.so	1ab896013f6df6d9
+7021	7316	7693707584068780	C:/Users/ngoda/Git/Plane_of_the_sky/Plane_of_the_sky/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/314r714s/obj/arm64-v8a/libgame.so	978329648012934a

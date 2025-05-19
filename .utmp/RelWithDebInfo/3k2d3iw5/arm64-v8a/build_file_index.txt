@@ -1,0 +1,3 @@
+C:\Users\ngoda\Git\Plane_of_the_sky\Plane_of_the_sky\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\ngoda\Git\Plane_of_the_sky\Plane_of_the_sky\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt
+C:\Users\ngoda\Git\Plane_of_the_sky\Plane_of_the_sky\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

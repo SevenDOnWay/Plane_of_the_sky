@@ -1,0 +1,1 @@
+C:\Users\ngoda\Git\Plane_of_the_sky\Plane_of_the_sky\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\3k2d3iw5\obj\arm64-v8a

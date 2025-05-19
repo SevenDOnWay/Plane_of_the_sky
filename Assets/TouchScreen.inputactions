@@ -19,8 +19,8 @@
                 {
                     "name": "",
                     "id": "14bc3b4c-1d88-4d52-acec-9334599254db",
-                    "path": "<Touchscreen>/delta",
-                    "interactions": "",
+                    "path": "<Touchscreen>/primaryTouch/delta",
+                    "interactions": "Hold(duration=0.01,pressPoint=0.2)",
                     "processors": "",
                     "groups": ";TouchScreen",
                     "action": "Move",

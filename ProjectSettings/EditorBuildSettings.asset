@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/CatlandsGames/9FreeBackgrounds/Scenes/Scene1Backgrounds.unity
+    guid: 945820a896da13b4fbcf487496b174de
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:
