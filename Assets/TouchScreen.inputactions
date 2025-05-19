@@ -1,0 +1,40 @@
+{
+    "name": "TouchScreen",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "f8dd5864-973e-4f10-a0c7-f903ba333763",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "277fc761-6b5e-4b4b-8f72-02bccc261e80",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "14bc3b4c-1d88-4d52-acec-9334599254db",
+                    "path": "<Touchscreen>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";TouchScreen",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "TouchScreen",
+            "bindingGroup": "TouchScreen",
+            "devices": []
+        }
+    ]
+}
