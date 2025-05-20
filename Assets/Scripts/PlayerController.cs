@@ -1,22 +1,36 @@
+using System;
+using Unity.Cinemachine;
 using Unity.Mathematics;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.UIElements;
+using UnityEngine.InputSystem.EnhancedTouch;
+
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class PlayerController : MonoBehaviour {
+    
     [SerializeField] InputActionAsset inputActions;
     InputAction moveAction;
-
-    [SerializeField] float horizontalSpeed = 5f;
-    [SerializeField] float verticalSpeed = 3f;
+    
+    [Header("Player movement")]
+    [SerializeField] float horizontalSpeed = 1f;
+    [SerializeField] float verticalSpeed = 0.5f;
     [SerializeField] float rotationSpeed;
-    [SerializeField] float maxAngle = 40.0f;
+    [SerializeField] float maxAngle = 35.0f;
+
+    [Header("safe zone")]
+    float safeWidthScreen = 20f;
+    float safeHeightScreen = 8.5f;
+
+    [Header("Player Rotation")]
+    [SerializeField] float frequency = 5f;
+    [SerializeField] float damping = 0.4f;
+
     [SerializeField] float maxDragDistance;
     [SerializeField] float smoothMoveTime;
     [SerializeField] float smoothRotateTime;
-    [SerializeField] float bounceEffect;
 
     Vector2 initPos;
     Vector2 currentPos;
@@ -24,45 +38,61 @@ public class PlayerController : MonoBehaviour {
 
     float currentAngle = 0f;
     float angularVelocity = 0f;
-    float safeWidthScreen = 20f;
-    float safeHeightScreen = 8.5f;
+    
 
     Vector3 velocity;
 
     bool isDragging;
 
+    private void Awake() {
+        EnhancedTouchSupport.Enable();
+        UnityEngine.InputSystem.EnhancedTouch.TouchSimulation.Enable();
+    }
+
     private void OnEnable() {
+
         var playerMap = inputActions.FindActionMap("Player");
         moveAction = playerMap.FindAction("Move");
         moveAction.Enable();
-
-        moveAction.started += OnStartHold;
-        moveAction.performed += OnHoldPerformed;
-        moveAction.canceled += OnHoldCanceled;
     }
 
     private void OnDisable() {
-        moveAction.started -= OnStartHold;
-        moveAction.performed -= OnHoldPerformed;
-        moveAction.canceled -= OnHoldCanceled;
+
         moveAction.Disable();
     }
 
     void Update() {
-        if (!isDragging) {
-            currentAngle = Mathf.SmoothDampAngle(currentAngle, 0f, ref angularVelocity, 0.2f);
-            transform.rotation = Quaternion.Euler(0, 0, currentAngle);
-            return;
+        foreach (var touch in Touch.activeTouches) {
+            switch (touch.phase) {
+                case TouchPhase.Began:
+                    initPos = touch.screenPosition;
+                    isDragging = true;
+                    break;
+
+                case TouchPhase.Moved:
+                case TouchPhase.Stationary:
+                    currentPos = touch.screenPosition;
+                    break;
+
+                case TouchPhase.Ended:
+                case TouchPhase.Canceled:
+                    initPos = Vector2.zero;
+                    currentPos = Vector2.zero;
+                    isDragging = false;
+                    break;
+            }
         }
 
-        // Target movement delta (from drag)
-        Vector2 delta = initPos - currentPos;
-        delta = Vector2.ClampMagnitude(delta, maxDragDistance);
 
-        Vector2 speedDelta = new Vector2(delta.x * horizontalSpeed, delta.y * verticalSpeed);
+        // Target movement delta (from drag)
+        Vector2 delta = currentPos - initPos;
+        delta = Vector2.ClampMagnitude(delta, maxDragDistance);
+        Vector2 normalized = delta / maxDragDistance;
+
+        Vector2 moveDelta = new Vector2(normalized.x * horizontalSpeed, normalized.y * verticalSpeed);
 
         // Desired target position
-        Vector3 targetPosition = transform.position + (Vector3)(speedDelta * Time.deltaTime);
+        Vector3 targetPosition = transform.position + (Vector3)(moveDelta * Time.deltaTime);
 
         // Clamp to safe zone
         targetPosition.x = Mathf.Clamp(targetPosition.x, -safeWidthScreen, safeWidthScreen);
@@ -71,27 +101,39 @@ public class PlayerController : MonoBehaviour {
         // Smooth movement
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothMoveTime);
 
-        // Rotate
-        float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
-        angle = Mathf.Clamp(angle, -maxAngle, maxAngle);
-        currentAngle = angle;
+        //Rotate
+        if (isDragging) {
+            float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+            angle = Mathf.Clamp(angle, -maxAngle, maxAngle);
+            currentAngle = angle;
+        }
+        else {
+            currentAngle = Spring(currentAngle, 0, frequency, damping, Time.deltaTime);
+        }
+
         transform.rotation = Quaternion.Euler(0, 0, currentAngle);
     }
 
-    void OnStartHold(InputAction.CallbackContext ctx) {
-        initPos = ctx.ReadValue<Vector2>();
-        isDragging = true;
-    }
+    #region
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="current"></param> 
+    /// <param name="target"></param>
+    /// <param name="frequency"></param>
+    /// <param name="damping"></param>
+    /// <param name="deltaTime"></param>
+    /// <returns></returns>
+    #endregion
 
-    void OnHoldPerformed(InputAction.CallbackContext ctx) {
-        if (isDragging)
-            currentPos = ctx.ReadValue<Vector2>();
-    }
+    float Spring(float current, float target, float frequency, float damping, float deltaTime) {
+        float omega = 2 * Mathf.PI * frequency;
+        float x = omega * deltaTime;
+        float exp = Mathf.Exp(-damping * x);
 
-    void OnHoldCanceled(InputAction.CallbackContext ctx) {
-        isDragging = false;
-        initPos = Vector2.zero;
-        currentPos = Vector2.zero;
-    }
 
+        float angle = (current - target) * exp * (Mathf.Cos(x) + damping * Mathf.Sin(x)) + target;
+        Debug.Log($"freq: {frequency}, damp: {damping}, dt: {deltaTime}, omega: {omega}, x: {x}, exp: {exp}, angle: {angle}");
+        return angle;
+    }
 }
