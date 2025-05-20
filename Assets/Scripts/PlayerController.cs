@@ -15,18 +15,17 @@ public class PlayerController : MonoBehaviour {
     InputAction moveAction;
     
     [Header("Player movement")]
-    [SerializeField] float horizontalSpeed = 1f;
-    [SerializeField] float verticalSpeed = 0.5f;
-    [SerializeField] float rotationSpeed;
-    [SerializeField] float maxAngle = 35.0f;
+    [SerializeField] float horizontalSpeed = 30f;
+    [SerializeField] float verticalSpeed = 20f;
 
     [Header("safe zone")]
     float safeWidthScreen = 20f;
     float safeHeightScreen = 8.5f;
 
     [Header("Player Rotation")]
-    [SerializeField] float frequency = 5f;
-    [SerializeField] float damping = 0.4f;
+    [SerializeField] float rotationFactor;
+    [SerializeField] float frequency = 1.5f;
+    [SerializeField] float damping = 0.5f;
 
     [SerializeField] float maxDragDistance;
     [SerializeField] float smoothMoveTime;
@@ -103,8 +102,7 @@ public class PlayerController : MonoBehaviour {
 
         //Rotate
         if (isDragging) {
-            float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
-            angle = Mathf.Clamp(angle, -maxAngle, maxAngle);
+            float angle = delta.y * rotationFactor;
             currentAngle = angle;
         }
         else {
