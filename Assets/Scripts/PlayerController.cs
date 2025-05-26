@@ -36,9 +36,7 @@ public class PlayerController : MonoBehaviour {
 
 
     float currentAngle = 0f;
-    float angularVelocity = 0f;
     
-
     Vector3 velocity;
 
     bool isDragging;
