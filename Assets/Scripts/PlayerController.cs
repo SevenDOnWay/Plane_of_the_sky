@@ -10,24 +10,24 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class PlayerController : MonoBehaviour {
-    
+
     [SerializeField] InputActionAsset inputActions;
     InputAction moveAction;
-    
+
     [Header("Player movement")]
     [SerializeField] float horizontalSpeed = 30f;
     [SerializeField] float verticalSpeed = 20f;
 
     [Header("safe zone")]
     float safeWidthScreen = 20f;
-    float safeHeightScreen = 8.5f;
+    float safeHeightScreen = 4.3f;
 
     [Header("Player Rotation")]
     [SerializeField] float rotationFactor;
     [SerializeField] float frequency = 1.5f;
     [SerializeField] float damping = 0.5f;
 
-    [SerializeField] float maxDragDistance;
+    [SerializeField] float maxDragDistance = 100f;
     [SerializeField] float smoothMoveTime;
     [SerializeField] float smoothRotateTime;
 
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
 
 
     float currentAngle = 0f;
-    
+
     Vector3 velocity;
 
     bool isDragging;
@@ -46,61 +46,53 @@ public class PlayerController : MonoBehaviour {
         UnityEngine.InputSystem.EnhancedTouch.TouchSimulation.Enable();
     }
 
-    private void OnEnable() {
-
-        var playerMap = inputActions.FindActionMap("Player");
-        moveAction = playerMap.FindAction("Move");
-        moveAction.Enable();
-    }
-
-    private void OnDisable() {
-
-        moveAction.Disable();
-    }
-
     void Update() {
+        if (StateController.Instance != null || StateController.Instance.isPlaying) {
+            HandleTouchInput();
+            Vector2 moveDelta = CalculateMoveDelta();
+            MovePlayer(moveDelta);
+            RotatePlayer(moveDelta);
+        }
+    }
+
+    void HandleTouchInput() {
         foreach (var touch in Touch.activeTouches) {
             switch (touch.phase) {
                 case TouchPhase.Began:
-                    initPos = touch.screenPosition;
-                    isDragging = true;
-                    break;
-
+                initPos = touch.screenPosition;
+                isDragging = true;
+                break;
                 case TouchPhase.Moved:
                 case TouchPhase.Stationary:
-                    currentPos = touch.screenPosition;
-                    break;
-
+                currentPos = touch.screenPosition;
+                break;
                 case TouchPhase.Ended:
                 case TouchPhase.Canceled:
-                    initPos = Vector2.zero;
-                    currentPos = Vector2.zero;
-                    isDragging = false;
-                    break;
+                initPos = Vector2.zero;
+                currentPos = Vector2.zero;
+                isDragging = false;
+                break;
             }
         }
+    }
 
-
-        // Target movement delta (from drag)
+    Vector2 CalculateMoveDelta() {
         Vector2 delta = currentPos - initPos;
         delta = Vector2.ClampMagnitude(delta, maxDragDistance);
         Vector2 normalized = delta / maxDragDistance;
+        return new Vector2(normalized.x * horizontalSpeed, normalized.y * verticalSpeed);
+    }
 
-        Vector2 moveDelta = new Vector2(normalized.x * horizontalSpeed, normalized.y * verticalSpeed);
-
-        // Desired target position
+    void MovePlayer(Vector2 moveDelta) {
         Vector3 targetPosition = transform.position + (Vector3)(moveDelta * Time.deltaTime);
-
-        // Clamp to safe zone
         targetPosition.x = Mathf.Clamp(targetPosition.x, -safeWidthScreen, safeWidthScreen);
         targetPosition.y = Mathf.Clamp(targetPosition.y, -safeHeightScreen, safeHeightScreen);
-
-        // Smooth movement
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothMoveTime);
+    }
 
-        //Rotate
+    void RotatePlayer(Vector2 moveDelta) {
         if (isDragging) {
-            float angle = delta.y * rotationFactor;
+            float angle = moveDelta.y / verticalSpeed * rotationFactor * maxDragDistance;
             currentAngle = angle;
         }
         else {
@@ -129,7 +121,6 @@ public class PlayerController : MonoBehaviour {
 
 
         float angle = (current - target) * exp * (Mathf.Cos(x) + damping * Mathf.Sin(x)) + target;
-        Debug.Log($"freq: {frequency}, damp: {damping}, dt: {deltaTime}, omega: {omega}, x: {x}, exp: {exp}, angle: {angle}");
         return angle;
     }
 }
