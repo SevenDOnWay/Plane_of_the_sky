@@ -7,6 +7,7 @@ public class MenuController : MonoBehaviour {
     [SerializeField] GameObject skinScreen;
     [SerializeField] GameObject dailyChallengeScreen;
     [SerializeField] GameObject storeScreen;
+    [SerializeField] GameObject playAgainPannel;
 
     [SerializeField] GameObject game;
 
@@ -19,6 +20,7 @@ public class MenuController : MonoBehaviour {
         dailyChallengeScreen.SetActive(false);
         storeScreen.SetActive(false);
         game.SetActive(false);
+        playAgainPannel.SetActive(false);
     }
 
     public void OnClickPlay() {
@@ -84,6 +86,5 @@ public class MenuController : MonoBehaviour {
         game.SetActive(true);
         StateController.Instance.StartGame();
 
-        Debug.Log(StateController.Instance.isPlaying);
     }
 }
