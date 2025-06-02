@@ -19,17 +19,18 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] float verticalSpeed = 20f;
 
     [Header("safe zone")]
-    float safeWidthScreen = 20f;
-    float safeHeightScreen = 4.3f;
+    float safeWidthScreen;
+    float safeHeightScreen;
 
     [Header("Player Rotation")]
-    [SerializeField] float rotationFactor;
+    [SerializeField] float rotationFactor = 0.25f;
+    [SerializeField] float maxRotationAngle = 45f;
     [SerializeField] float frequency = 1.5f;
     [SerializeField] float damping = 0.5f;
 
     [SerializeField] float maxDragDistance = 100f;
-    [SerializeField] float smoothMoveTime;
-    [SerializeField] float smoothRotateTime;
+    [SerializeField] float smoothMoveTime = 0.1f;
+    [SerializeField] float smoothRotateTime = 0.5f;
 
     Vector2 initPos;
     Vector2 currentPos;
@@ -41,13 +42,26 @@ public class PlayerController : MonoBehaviour {
 
     bool isDragging;
 
-    private void Awake() {
+    void Start() {
+        Camera mainCamera = Camera.main;
+        if ( mainCamera != null ) {
+            // Get the height from camera's orthographic size
+            safeHeightScreen = mainCamera.orthographicSize;
+            // Calculate width based on aspect ratio
+            safeWidthScreen = safeHeightScreen * mainCamera.aspect;
+        }
+        else { 
+        Debug.LogError("Main Camera not found. Please ensure there is a camera tagged as 'MainCamera' in the scene.");
+        }
+    }
+
+    void Awake() {
         EnhancedTouchSupport.Enable();
         UnityEngine.InputSystem.EnhancedTouch.TouchSimulation.Enable();
     }
 
     void Update() {
-        if (StateController.Instance != null || StateController.Instance.isPlaying) {
+        if ( StateController.Instance != null || StateController.Instance.isPlaying ) {
             HandleTouchInput();
             Vector2 moveDelta = CalculateMoveDelta();
             MovePlayer(moveDelta);
@@ -56,8 +70,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     void HandleTouchInput() {
-        foreach (var touch in Touch.activeTouches) {
-            switch (touch.phase) {
+        foreach ( var touch in Touch.activeTouches ) {
+            switch ( touch.phase ) {
                 case TouchPhase.Began:
                 initPos = touch.screenPosition;
                 isDragging = true;
@@ -84,16 +98,16 @@ public class PlayerController : MonoBehaviour {
     }
 
     void MovePlayer(Vector2 moveDelta) {
-        Vector3 targetPosition = transform.position + (Vector3)(moveDelta * Time.deltaTime);
+        Vector3 targetPosition = transform.position + (Vector3) (moveDelta * Time.deltaTime);
         targetPosition.x = Mathf.Clamp(targetPosition.x, -safeWidthScreen, safeWidthScreen);
         targetPosition.y = Mathf.Clamp(targetPosition.y, -safeHeightScreen, safeHeightScreen);
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothMoveTime);
     }
 
     void RotatePlayer(Vector2 moveDelta) {
-        if (isDragging) {
+        if ( isDragging ) {
             float angle = moveDelta.y / verticalSpeed * rotationFactor * maxDragDistance;
-            currentAngle = angle;
+            currentAngle = Mathf.Clamp(angle, -maxRotationAngle, maxRotationAngle);
         }
         else {
             currentAngle = Spring(currentAngle, 0, frequency, damping, Time.deltaTime);

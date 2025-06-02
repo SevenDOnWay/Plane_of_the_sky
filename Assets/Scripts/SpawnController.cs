@@ -48,6 +48,9 @@ public class SpawnController : MonoBehaviour {
             // Create pool for this type
             for (int i = 0; i < obstacleType.poolSize; i++) {
                 GameObject obj = Instantiate(obstacleType.prefab, spawnPoint, Quaternion.identity);
+                SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+                sr.sortingOrder = 50;
+
                 obj.SetActive(false);
                 pool.Add(obj);
             }

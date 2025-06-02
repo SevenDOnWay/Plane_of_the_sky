@@ -7,10 +7,10 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class ParallaxBackGround : MonoBehaviour {
     [System.Serializable]
     public class Mountain {
-        [SerializeField] GameObject[] mountains ;
+        [SerializeField] GameObject mountains ;
 
 
-        public GameObject[] Mountains => mountains;
+        public GameObject Mountains => mountains;
 
     }
 
@@ -19,12 +19,14 @@ public class ParallaxBackGround : MonoBehaviour {
         [SerializeField] List<Mountain> layers = new List<Mountain>();
         [SerializeField] float heightOffset = 0f;
         [SerializeField] float baseHeight = 0f;
-        [SerializeField, Range(0, 1)] float scrollSpeed = 0.5f;
+        [SerializeField] float xSpawnRange = 0f;
+        [SerializeField, Range(0, 10)] float scrollSpeed = 0f;
 
         public List<Mountain> Layers => layers;
         public float ScrollSpeed => scrollSpeed;
         public float HeightOffset => heightOffset;
         public float BaseHeight => baseHeight;
+        public float XSpawnRange => xSpawnRange;
     }
 
 
@@ -42,16 +44,14 @@ public class ParallaxBackGround : MonoBehaviour {
         spriteRendererCache = new Dictionary<GameObject, SpriteRenderer>();
 
         foreach ( var layer in layers ) {
-            if ( layer == null ) continue;
+            if ( layer?.Layers == null ) continue;
 
             foreach ( var mountain in layer.Layers ) {
-                foreach ( var obj in mountain.Mountains ) {
-                    if ( obj != null ) {
-                        var sprite = obj.GetComponent<SpriteRenderer>();
-                        if ( sprite != null ) {
-                            spriteRendererCache[obj] = sprite;
-                        }
-                    }
+                if ( mountain?.Mountains == null ) continue;
+
+                var sprite = mountain.Mountains.GetComponent<SpriteRenderer>();
+                if ( sprite != null ) {
+                    spriteRendererCache[mountain.Mountains] = sprite;
                 }
             }
         }
@@ -61,33 +61,30 @@ public class ParallaxBackGround : MonoBehaviour {
         if ( !StateController.Instance.isPlaying ) return;
 
         foreach ( var layer in layers ) {
-            if ( layer == null ) continue;
+            if ( layer?.Layers == null ) continue;
 
             foreach ( var mountain in layer.Layers ) {
-                foreach ( var obj in mountain.Mountains ) {
-                    if ( obj == null ) continue;
-
-                    UpdateMountainPosition(obj, layer, mountain);
-                }
+                if ( mountain?.Mountains == null ) continue;
+                UpdateMountainPosition(mountain.Mountains, layer);
             }
         }
     }
 
-    void UpdateMountainPosition(GameObject obj, ParallaxLayer layer, Mountain mountain) {
-        Vector3 position = obj.transform.position;
+    void UpdateMountainPosition(GameObject mountainObj, ParallaxLayer layer) {
+        mountainObj.transform.Translate(Vector3.left * layer.ScrollSpeed * Time.deltaTime);
 
-        obj.transform.position += Vector3.left * layer.ScrollSpeed * Time.deltaTime;
-
-        if (spriteRendererCache.TryGetValue(obj, out SpriteRenderer sprite) ) {
-            if ( position.x + sprite.bounds.size.x < boundary ) {
-                ResetMountainPosition(obj, layer, sprite.bounds.size.x);
+        // Check if mountain needs resetting
+        if ( spriteRendererCache.TryGetValue(mountainObj, out SpriteRenderer sprite) ) {
+            if ( mountainObj.transform.position.x + sprite.bounds.size.x < boundary ) {
+                ResetMountainPosition(mountainObj, layer, sprite.bounds.size.x);
             }
         }
     }
 
     void ResetMountainPosition(GameObject obj, ParallaxLayer layer, float width) {
+        float randomX = Random.Range(0, layer.XSpawnRange);
         float randomHeight = layer.BaseHeight + Random.Range(-layer.HeightOffset, layer.HeightOffset);
-        obj.transform.position = new Vector3(spawnPositionX + width, randomHeight, obj.transform.position.z);
+        obj.transform.localPosition = new Vector3(spawnPositionX + width + randomX, randomHeight, obj.transform.position.z);
     }
 
     void OnDrawGizmosSelected() {

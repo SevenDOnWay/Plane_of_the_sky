@@ -20,6 +20,8 @@ public class StateController : MonoBehaviour {
 
     public void EndGame() {
         isPlaying = false;
+
+        Debug.Log("Game Over!");
         // Show Game Over screen, stop movement, etc.
     }
 }
