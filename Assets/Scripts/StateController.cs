@@ -1,7 +1,11 @@
+using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class StateController : MonoBehaviour {
     public static StateController Instance { get; private set; }
+
+    public event Action OnGameEnded;
 
     public bool isPlaying { get; private set; }
 
@@ -20,6 +24,8 @@ public class StateController : MonoBehaviour {
 
     public void EndGame() {
         isPlaying = false;
+
+        OnGameEnded?.Invoke();
 
         Debug.Log("Game Over!");
         // Show Game Over screen, stop movement, etc.

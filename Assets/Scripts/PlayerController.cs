@@ -137,4 +137,14 @@ public class PlayerController : MonoBehaviour {
         float angle = (current - target) * exp * (Mathf.Cos(x) + damping * Mathf.Sin(x)) + target;
         return angle;
     }
+
+    void OnTriggerEnter2D(Collider2D collision) {
+        if( collision.CompareTag("Obstacle") ) {
+
+            //TODO add sfx, particle effects, play again?, etc.
+
+            Debug.Log("Player hit an obstacle!");
+            StateController.Instance.EndGame(); // End the game when the player hits an obstacle
+        }
+    }
 }

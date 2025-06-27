@@ -31,15 +31,4 @@ public class Obstacle : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision) {
-        if ( collision.CompareTag("Player") ) {
-
-            //TODO add animation, play sfx, score, play again?
-
-            playAgainPannel.SetActive(true);
-
-            Debug.Log("Obstacle hit the player!");
-            StateController.Instance.EndGame(); // End the game when the player hits an obstacle
-        }
-    }
 }

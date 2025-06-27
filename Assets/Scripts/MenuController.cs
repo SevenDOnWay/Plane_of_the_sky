@@ -12,6 +12,10 @@ public class MenuController : MonoBehaviour {
     [SerializeField] GameObject game;
 
 
+    void OnEnable() {
+        StateController.Instance.OnGameEnded += ShowPlayAgainPanel;
+    }
+
     void Start() {
         menuPanel.SetActive(true);
         playScreen.SetActive(true);
@@ -87,4 +91,45 @@ public class MenuController : MonoBehaviour {
         StateController.Instance.StartGame();
 
     }
+
+    void ShowPlayAgainPanel() {
+        playAgainPannel.SetActive(true);
+    }
+
+    public void ONClickHomeUI() {
+        menuPanel.SetActive(true);
+        playScreen.SetActive(true);
+        profileScreen.SetActive(false);
+        skinScreen.SetActive(false);
+        dailyChallengeScreen.SetActive(false);
+        storeScreen.SetActive(false);
+        game.SetActive(false);
+        playAgainPannel.SetActive(false);
+    }
+
+    public void OnClickPlayAgain() {
+        playAgainPannel.SetActive(false);
+
+        //TODO: reset game 
+
+
+
+        StateController.Instance.StartGame();
+    }
+
+    public void ONClickVideo() {
+        //TODO: Implement video ad logic and revice 
+
+
+        playAgainPannel.SetActive(false);
+    }
+
+    public void ONClickSpendMoney() {
+        //TODO: Implement spend money logic and revive
+
+
+        playAgainPannel.SetActive(false);
+    }
+
+
 }
