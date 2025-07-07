@@ -6,11 +6,11 @@ public class PlayAgainPannel : MonoBehaviour {
 
 
     void OnEnable() {
-        StateController.Instance.OnGameEnded += ShowPlayAgainPanel;
+        StateController.OnGameEnded += ShowPlayAgainPanel;
     }
 
     void OnDisable() {
-        StateController.Instance.OnGameEnded -= ShowPlayAgainPanel;
+        StateController.OnGameEnded -= ShowPlayAgainPanel;
     }
 
     void ShowPlayAgainPanel() {

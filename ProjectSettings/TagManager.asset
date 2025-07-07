@@ -42,5 +42,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Play Panel
+    uniqueID: 795660859
+    locked: 0
+  - name: Game OBJ
+    uniqueID: 4122950985
+    locked: 0
+  - name: Play Again Panel
+    uniqueID: 965249355
+    locked: 0
   m_RenderingLayers:
   - Default

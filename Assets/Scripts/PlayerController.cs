@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour {
     void Awake() {
         EnhancedTouchSupport.Enable();
         UnityEngine.InputSystem.EnhancedTouch.TouchSimulation.Enable();
+        
+        StateController.OnGameEnded += Deactive;
     }
 
     void Update() {
@@ -90,6 +92,8 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    #region Movement and Rotation Logic
+
     Vector2 CalculateMoveDelta() {
         Vector2 delta = currentPos - initPos;
         delta = Vector2.ClampMagnitude(delta, maxDragDistance);
@@ -116,35 +120,21 @@ public class PlayerController : MonoBehaviour {
         transform.rotation = Quaternion.Euler(0, 0, currentAngle);
     }
 
-    #region
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="current"></param> 
-    /// <param name="target"></param>
-    /// <param name="frequency"></param>
-    /// <param name="damping"></param>
-    /// <param name="deltaTime"></param>
-    /// <returns></returns>
-    #endregion
-
     float Spring(float current, float target, float frequency, float damping, float deltaTime) {
         float omega = 2 * Mathf.PI * frequency;
         float x = omega * deltaTime;
         float exp = Mathf.Exp(-damping * x);
 
-
         float angle = (current - target) * exp * (Mathf.Cos(x) + damping * Mathf.Sin(x)) + target;
         return angle;
     }
 
-    void OnTriggerEnter2D(Collider2D collision) {
-        if( collision.CompareTag("Obstacle") ) {
+    #endregion    
 
-            //TODO add sfx, particle effects, play again?, etc.
+    void Deactive() {
+        //todo add effects, sfx, etc.
 
-            Debug.Log("Player hit an obstacle!");
-            StateController.Instance.EndGame(); // End the game when the player hits an obstacle
-        }
+        gameObject.SetActive(false);
     }
+
 }

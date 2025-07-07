@@ -5,7 +5,8 @@ using UnityEngine;
 public class StateController : MonoBehaviour {
     public static StateController Instance { get; private set; }
 
-    public event Action OnGameEnded;
+    public static event Action OnGameStarted;
+    public static event Action OnGameEnded;
 
     public bool isPlaying { get; private set; }
 
@@ -15,6 +16,8 @@ public class StateController : MonoBehaviour {
             return;
         }
         Instance = this;
+
+        
     }
 
     public void StartGame() {
@@ -30,4 +33,5 @@ public class StateController : MonoBehaviour {
         Debug.Log("Game Over!");
         // Show Game Over screen, stop movement, etc.
     }
+
 }

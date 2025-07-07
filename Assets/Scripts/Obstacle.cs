@@ -31,4 +31,14 @@ public class Obstacle : MonoBehaviour {
         }
     }
 
+    void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Player")) {
+
+            //TODO add sfx, particle effects, play again?, etc.
+
+            Debug.Log("Player hit an obstacle!");
+            StateController.Instance.EndGame(); // End the game when the player hits an obstacle
+        }
+    }
+
 }

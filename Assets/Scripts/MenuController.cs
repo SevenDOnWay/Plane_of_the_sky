@@ -1,134 +1,100 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MenuController : MonoBehaviour {
-    [SerializeField] GameObject menuPanel;
-    [SerializeField] GameObject playScreen;
-    [SerializeField] GameObject profileScreen;
-    [SerializeField] GameObject skinScreen;
-    [SerializeField] GameObject dailyChallengeScreen;
-    [SerializeField] GameObject storeScreen;
-    [SerializeField] GameObject playAgainPannel;
+
+    [SerializeField] GameObject[] navPanels;
+    [SerializeField] GameObject navBar;
+    [SerializeField] GameObject playAgainPanel;
+
+    private GameObject playPanel;
+    private CanvasGroup playPanelCanvasGroup;
+
+    private int timeBetweenTransition = 10; // in milliseconds
 
     [SerializeField] GameObject game;
 
+    [SerializeField] Animator animator;
 
-    void OnEnable() {
-        StateController.Instance.OnGameEnded += ShowPlayAgainPanel;
+    //public delegate void MyDelegate();
+    //public static event MyDelegate myDelegate;
+
+    void Awake() {
+        playPanel = navPanels[2];
+        playPanelCanvasGroup = playPanel.GetComponent<CanvasGroup>();
     }
 
-    void Start() {
-        menuPanel.SetActive(true);
-        playScreen.SetActive(true);
-        profileScreen.SetActive(false);
-        skinScreen.SetActive(false);
-        dailyChallengeScreen.SetActive(false);
-        storeScreen.SetActive(false);
-        game.SetActive(false);
-        playAgainPannel.SetActive(false);
-    }
+    public async void ShowPanelByIndex(int index) {
 
-    public void OnClickPlay() {
-        menuPanel.SetActive(true);
-        playScreen.SetActive(true);
-        profileScreen.SetActive(false);
-        skinScreen.SetActive(false);
-        dailyChallengeScreen.SetActive(false);
-        storeScreen.SetActive(false);
-        game.SetActive(false);
-    }
+        await TransitionStart();
 
-    public void OnClickProfile() {
-        menuPanel.SetActive(true);
-        playScreen.SetActive(false);
-        profileScreen.SetActive(true);
-        skinScreen.SetActive(false);
-        dailyChallengeScreen.SetActive(false);
-        storeScreen.SetActive(false);
-        game.SetActive(false);
-    }
+        foreach (var panel in navPanels) {
+            panel.SetActive(false);
+        }
+        navPanels[index].SetActive(true);
 
-    public void OnClickSkin() {
-        menuPanel.SetActive(true);
-        playScreen.SetActive(false);
-        profileScreen.SetActive(false);
-        skinScreen.SetActive(true);
-        dailyChallengeScreen.SetActive(false);
-        storeScreen.SetActive(false);
-        game.SetActive(false);
-    }
+        await Task.Yield();
 
-    public void OnClickDailyChallenge() {
-        menuPanel.SetActive(true);
-        playScreen.SetActive(false);
-        profileScreen.SetActive(false);
-        skinScreen.SetActive(false);
-        dailyChallengeScreen.SetActive(true);
-        storeScreen.SetActive(false);
-        game.SetActive(false);
-    }
-        
-    public void OnClickStore() {
-        menuPanel.SetActive(true);
-        playScreen.SetActive(false);
-        profileScreen.SetActive(false);
-        skinScreen.SetActive(false);
-        dailyChallengeScreen.SetActive(false);
-        storeScreen.SetActive(true);
-        game.SetActive(false);
+        await TransitionEnd();
     }
 
     public void OnClickPlayPannel() {
         Debug.Log(StateController.Instance.isPlaying);
 
-        menuPanel.SetActive(false);
-        playScreen.SetActive(true);
-        profileScreen.SetActive(false);
-        skinScreen.SetActive(false);
-        dailyChallengeScreen.SetActive(false);
-        storeScreen.SetActive(false);
 
+        navBar.SetActive(false);
         game.SetActive(true);
+
+        playPanelCanvasGroup.blocksRaycasts = false;
+
+        StateController.OnGameEnded += ShowPlayAgainPanel;
+
+        //TODO add effect, sfx
+
+
         StateController.Instance.StartGame();
 
     }
 
     void ShowPlayAgainPanel() {
-        playAgainPannel.SetActive(true);
+        playAgainPanel.SetActive(true);
+        playPanelCanvasGroup.blocksRaycasts = true;
     }
 
-    public void ONClickHomeUI() {
-        menuPanel.SetActive(true);
-        playScreen.SetActive(true);
-        profileScreen.SetActive(false);
-        skinScreen.SetActive(false);
-        dailyChallengeScreen.SetActive(false);
-        storeScreen.SetActive(false);
-        game.SetActive(false);
-        playAgainPannel.SetActive(false);
-    }
 
-    public void OnClickPlayAgain() {
-        playAgainPannel.SetActive(false);
+    public async Task OnClickPlayAgain() {
 
-        //TODO: reset game 
+        //TODO: reset 
 
-
+        await OnClickPlayAgain(); //temporary fix to avoid infinite loop
 
         StateController.Instance.StartGame();
     }
 
-    public void ONClickVideo() {
-        //TODO: Implement video ad logic and revice 
 
 
-        playAgainPannel.SetActive(false);
+
+
+    async Task TransitionStart() {
+        animator.SetTrigger("IsTransitionStart");
+
+        await WaitForAnimation("IsTransitionStart");
     }
 
-    public void ONClickSpendMoney() {
-        //TODO: Implement spend money logic and revive
+    async Task TransitionEnd() {
+        animator.SetTrigger("IsTransitionEnd");
 
+        await WaitForAnimation("IsTransitionEnd");
+    }
 
-        playAgainPannel.SetActive(false);
+    async Task WaitForAnimation(string triggerName) {
+        while (animator.GetCurrentAnimatorStateInfo(0).IsName(triggerName)) await Task.Yield();
     }
 
 

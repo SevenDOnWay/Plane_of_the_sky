@@ -159,3 +159,4 @@ MonoBehaviour:
   accelerationRate: 0.1
   destroyDistance: -11
   spawnPoint: {x: 13, y: 0}
+  playAgainPannel: {fileID: 0}

@@ -33,6 +33,10 @@ public class SpawnController : MonoBehaviour {
     Dictionary<int, List<GameObject>> obstaclePools;
     float totalWeight;
 
+    private void Start() {
+        
+    }
+
     void Awake() {
         InitializePools();
     }
