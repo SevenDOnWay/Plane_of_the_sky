@@ -1,0 +1,249 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7167745349724270166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Ambient.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Documents/FMOD Studio/Testing/idk/Build/Desktop/Ambient.bank
+  Name: Ambient
+  StudioPath: bank:/Ambient
+  lastModified: 638894867240536104
+  FileSizes:
+  - Name: Desktop
+    Value: 17102336
+  Exists: 1
+--- !u!114 &-5641210679444208707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Background_Music/MainMenu
+  m_EditorClassIdentifier: 
+  Path: event:/Background_Music/MainMenu
+  Guid:
+    Data1: 1775059958
+    Data2: 1106227195
+    Data3: 1633179267
+    Data4: 1876699174
+  Banks:
+  - {fileID: -7167745349724270166}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 80000
+--- !u!114 &-5039107898230009230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UIButton
+  m_EditorClassIdentifier: 
+  Path: event:/UIButton
+  Guid:
+    Data1: -8740080
+    Data2: 1305974242
+    Data3: -1052228202
+    Data4: 481436890
+  Banks:
+  - {fileID: 8210632336700086428}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  EditorBanks:
+  - {fileID: 1559133756024151425}
+  - {fileID: -7167745349724270166}
+  - {fileID: 1569045428374092686}
+  - {fileID: 4722641658202516768}
+  - {fileID: 8210632336700086428}
+  EditorEvents:
+  - {fileID: 1024890650909508286}
+  - {fileID: -5039107898230009230}
+  - {fileID: -5641210679444208707}
+  - {fileID: 8600036242064134817}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: 1569045428374092686}
+  StringsBanks:
+  - {fileID: 1559133756024151425}
+  cacheVersion: 131848
+  cacheTime: 638894867240536104
+  SerializableEventsDict:
+  - key: event:/Crashing
+    index: 0
+  - key: event:/UIButton
+    index: 1
+  - key: event:/Background_Music/MainMenu
+    index: 2
+  - key: event:/Background_Music/AmbientGamePlay
+    index: 3
+--- !u!114 &1024890650909508286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Crashing
+  m_EditorClassIdentifier: 
+  Path: event:/Crashing
+  Guid:
+    Data1: 693065356
+    Data2: 1265177019
+    Data3: -911001216
+    Data4: -1360286256
+  Banks:
+  - {fileID: 4722641658202516768}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &1559133756024151425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Documents/FMOD Studio/Testing/idk/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 638894222497890500
+  FileSizes:
+  - Name: Desktop
+    Value: 1278
+  Exists: 1
+--- !u!114 &1569045428374092686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Documents/FMOD Studio/Testing/idk/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638894222497860416
+  FileSizes:
+  - Name: Desktop
+    Value: 1744
+  Exists: 1
+--- !u!114 &4722641658202516768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Crashing.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Documents/FMOD Studio/Testing/idk/Build/Desktop/Crashing.bank
+  Name: Crashing
+  StudioPath: bank:/Crashing
+  lastModified: 638894222497736904
+  FileSizes:
+  - Name: Desktop
+    Value: 38976
+  Exists: 1
+--- !u!114 &8210632336700086428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/UI_Button.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Documents/FMOD Studio/Testing/idk/Build/Desktop/UI_Button.bank
+  Name: UI_Button
+  StudioPath: bank:/UI_Button
+  lastModified: 638894222498160806
+  FileSizes:
+  - Name: Desktop
+    Value: 3360
+  Exists: 1
+--- !u!114 &8600036242064134817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Background_Music/AmbientGamePlay
+  m_EditorClassIdentifier: 
+  Path: event:/Background_Music/AmbientGamePlay
+  Guid:
+    Data1: -544371458
+    Data2: 1241656037
+    Data3: -449528167
+    Data4: 165028099
+  Banks:
+  - {fileID: -7167745349724270166}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 126000

@@ -49,9 +49,11 @@ public class SecureSaveSystem {
     public static PlayerData Load() {
         try {
             string path = GetFullPath();
-            if (!File.Exists(path)) {
-                Debug.LogWarning("Save file not found");
-                return null;
+            if ( !File.Exists(path) ) {
+                Debug.LogWarning("Save file not found at: " + path + ". Creating new save file.");
+                PlayerData defaultData = CreateDefaultPlayerData();
+                Save(defaultData);
+                return defaultData;
             }
 
             byte[] fileBytes = File.ReadAllBytes(path);
@@ -75,12 +77,29 @@ public class SecureSaveSystem {
             }
 
             string json = Encoding.UTF8.GetString(decryptedBytes);
+
+            Debug.Log("Decrypted save loaded from: " + path);
+
             return JsonUtility.FromJson<PlayerData>(json);
         }
         catch(Exception ex) {
             Debug.LogError("Failed to load save file: " + ex.Message);
             return null;
         }
+    }
+
+    private static PlayerData CreateDefaultPlayerData() {
+        return new PlayerData {
+            skinUnlockedID = new List<string> { "defaultSkin" },
+            currentSkinID = 0,
+            coins = 0,
+            diamonds = 0,
+            highScore = 0,
+            totaltimePlayed = 0,
+            masterVolume = 0.5f,
+            sfxVolume = 0.5f,
+            musicVolume = 0.5f,
+        };
     }
 
     private static string GetFullPath() => Path.Combine(Application.persistentDataPath, SaveFileName);

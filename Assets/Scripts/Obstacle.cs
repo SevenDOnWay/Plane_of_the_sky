@@ -1,24 +1,32 @@
+using System;
 using UnityEngine;
 
 public class Obstacle : MonoBehaviour {
     [SerializeField] float initSpeed = 5f;
     [SerializeField] float maxSpeed = 12f;
     [SerializeField] float accelerationRate = 0.1f;
-    [SerializeField] float destroyDistance = -11f;
-    [SerializeField] Vector2 spawnPoint = new Vector2(13, 0);
+    [SerializeField] float spawnPoint;
 
-    [SerializeField] GameObject playAgainPannel;
 
     private float currentSpeed;
+    private float halfSpriteWidth;
+
+
 
     private void OnEnable() {
         currentSpeed = initSpeed;
     }
 
+    void Start() {
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        halfSpriteWidth = spriteRenderer.bounds.extents.x;
+        spawnPoint = WorldSizeManager.Instance.worldScreenWidth;
+    }
+
     void Update() {
-        if ( StateController.Instance.isPlaying ) {
-            if ( transform.position.x < destroyDistance ) {
-                transform.position = spawnPoint;
+        if ( StateManager.Instance.isPlaying ) {
+            if ( transform.position.x + halfSpriteWidth < -(WorldSizeManager.Instance.worldScreenWidth) ) {
+                transform.position = new Vector2(spawnPoint - halfSpriteWidth, 0);
                 gameObject.SetActive(false);
             }
 
@@ -31,13 +39,17 @@ public class Obstacle : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("Player")) {
+
+
+    void OnTriggerEnter2D( Collider2D collision ) {
+        if ( collision.CompareTag("Player") ) {
 
             //TODO add sfx, particle effects, play again?, etc.
 
+            AudioManager.Instance.PlaySFX("event:/Crashing");
+
             Debug.Log("Player hit an obstacle!");
-            StateController.Instance.EndGame(); // End the game when the player hits an obstacle
+            StateManager.Instance.EndGame(); // End the game when the player hits an obstacle
         }
     }
 
