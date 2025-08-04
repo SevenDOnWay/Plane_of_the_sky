@@ -1,90 +1,94 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.UIElements;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEditorInternal.ReorderableList;
 
 public class ParallaxBackGround : MonoBehaviour {
-    [System.Serializable]
-    public class Mountain {
-        [SerializeField] GameObject mountains ;
-
-
-        public GameObject Mountains => mountains;
-
-    }
 
     [System.Serializable]
     public class ParallaxLayer {
-        [SerializeField] List<Mountain> layers = new List<Mountain>();
-        [SerializeField] float heightOffset = 0f;
-        [SerializeField] float baseHeight = 0f;
-        [SerializeField] float xSpawnRange = 0f;
-        [SerializeField, Range(0, 10)] float scrollSpeed = 0f;
-
-        public List<Mountain> Layers => layers;
-        public float ScrollSpeed => scrollSpeed;
-        public float HeightOffset => heightOffset;
-        public float BaseHeight => baseHeight;
-        public float XSpawnRange => xSpawnRange;
+        [SerializeField] public GameObject mountainPrefab;
+        [HideInInspector] public List<GameObject> mountainInstances = new List<GameObject>();
+        [HideInInspector] public List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
+        [SerializeField] public bool mainMountain;
+        [SerializeField] public float heightOffset = 0f;
+        [SerializeField] public float baseHeight = 0f;
+        [SerializeField] public float xSpawnRange = 0f;
+        [SerializeField, Range(1,3)] public int amountMountain = 1;
+        [SerializeField, Range(0, 10)] public float scrollSpeed = 0f;
     }
 
 
-    [SerializeField] float boundary = -13f;
-    [SerializeField] float spawnPositionX = 13f;
-    [SerializeField] ParallaxLayer[] layers;
+    [SerializeField] ParallaxLayer[] mountains;
+    [SerializeField] GameObject mountainPool;
 
-    Dictionary<GameObject, SpriteRenderer> spriteRendererCache;
+    float boundary;
 
     void Awake() {
-        InitializeCache();
+        InitializeMountain();
+        CalculateWorldSize();
     }
 
-    void InitializeCache() {
-        spriteRendererCache = new Dictionary<GameObject, SpriteRenderer>();
+    void InitializeMountain() {
+        foreach ( var obj in mountains ) {
+            if ( obj.mountainPrefab == null ) continue;
+            for ( int i = 0; i < obj.amountMountain; i++ ) {
 
-        foreach ( var layer in layers ) {
-            if ( layer?.Layers == null ) continue;
+                Vector3 pos;
 
-            foreach ( var mountain in layer.Layers ) {
-                if ( mountain?.Mountains == null ) continue;
-
-                var sprite = mountain.Mountains.GetComponent<SpriteRenderer>();
-                if ( sprite != null ) {
-                    spriteRendererCache[mountain.Mountains] = sprite;
+                if ( obj.mainMountain ) {
+                    pos = new Vector3(0, 0, 0f); // fixed position for main mountain
                 }
+                else {
+                    float posx = Random.Range(-obj.xSpawnRange, obj.xSpawnRange);
+                    float posy = obj.baseHeight + Random.Range(-obj.heightOffset, obj.heightOffset);
+                    pos = new Vector3(posx, posy, 0f);
+                }
+
+                GameObject instance = Instantiate(obj.mountainPrefab, pos, Quaternion.identity, mountainPool.transform);
+                obj.mountainInstances.Add(instance);
+                obj.spriteRenderers.Add(instance.GetComponent<SpriteRenderer>());
             }
         }
+    }
+
+    void CalculateWorldSize() { 
+        boundary = WorldSizeManager.Instance.worldScreenWidth;
     }
 
     void Update() {
-        if ( !StateController.Instance.isPlaying ) return;
+        if ( !StateManager.Instance.isPlaying || StateManager.Instance.isPausing) return;
 
-        foreach ( var layer in layers ) {
-            if ( layer?.Layers == null ) continue;
+        foreach ( var obj in mountains ) {
+            UpdateMountainPosition(obj);
+        }
+    }
 
-            foreach ( var mountain in layer.Layers ) {
-                if ( mountain?.Mountains == null ) continue;
-                UpdateMountainPosition(mountain.Mountains, layer);
+    void UpdateMountainPosition( ParallaxLayer obj ) {
+        for ( int i = 0; i < obj.mountainInstances.Count; i++ ) {
+            if ( obj.mountainInstances == null ) continue;
+
+            obj.mountainInstances[i].transform.Translate(Vector3.left * obj.scrollSpeed * Time.deltaTime);
+
+            // Check if mountain needs resetting
+            if ( obj.mountainInstances[i].transform.position.x + obj.spriteRenderers[i].bounds.extents.x < boundary ) {
+                ResetMountainPosition(obj.mountainInstances[i], obj.xSpawnRange, obj.baseHeight, obj.heightOffset);
             }
         }
     }
 
-    void UpdateMountainPosition(GameObject mountainObj, ParallaxLayer layer) {
-        mountainObj.transform.Translate(Vector3.left * layer.ScrollSpeed * Time.deltaTime);
+    IEnumerator ResetMountainPosition( GameObject mountain, float xSpawnRange, float baseHeight, float heightOffset ) {
+        var time = Random.Range(1,5);
+        yield return new WaitForSeconds(time);
 
-        // Check if mountain needs resetting
-        if ( spriteRendererCache.TryGetValue(mountainObj, out SpriteRenderer sprite) ) {
-            if ( mountainObj.transform.position.x + sprite.bounds.size.x < boundary ) {
-                ResetMountainPosition(mountainObj, layer, sprite.bounds.size.x);
-            }
-        }
-    }
 
-    void ResetMountainPosition(GameObject obj, ParallaxLayer layer, float width) {
-        float randomX = Random.Range(0, layer.XSpawnRange);
-        float randomHeight = layer.BaseHeight + Random.Range(-layer.HeightOffset, layer.HeightOffset);
-        obj.transform.localPosition = new Vector3(spawnPositionX + width + randomX, randomHeight, obj.transform.position.z);
+        float randomX = Random.Range(0, xSpawnRange);
+        float randomHeight = baseHeight + Random.Range(-heightOffset, heightOffset);
+        mountain.transform.localPosition = new Vector3(boundary + randomX, randomHeight, 1);
     }
 
     void OnDrawGizmosSelected() {
@@ -92,7 +96,7 @@ public class ParallaxBackGround : MonoBehaviour {
         Gizmos.DrawLine(new Vector3(boundary, -10, 0), new Vector3(boundary, 10, 0));
 
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(new Vector3(spawnPositionX, -10, 0), new Vector3(spawnPositionX, 10, 0));
+        Gizmos.DrawLine(new Vector3(boundary, -10, 0), new Vector3(boundary, 10, 0));
     }
 
 }

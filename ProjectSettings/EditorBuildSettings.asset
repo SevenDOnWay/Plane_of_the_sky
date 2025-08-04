@@ -5,12 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/CatlandsGames/9FreeBackgrounds/Scenes/Scene1Backgrounds.unity
     guid: 945820a896da13b4fbcf487496b174de
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/GamePlay.unity
+    guid: a2c636c3d886f8549818f10478abc7a5
+  - enabled: 1
+    path: Assets/Scenes/CreditScene.unity
+    guid: 21aaf4df70e453244a5e74edab887cde
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 669bf2b56cd963b4cbcff180dbb28312, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: b9566abe72e88c640adc6ff359a3aa8e, type: 2}

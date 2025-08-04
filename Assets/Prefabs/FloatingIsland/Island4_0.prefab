@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 65
   m_Sprite: {fileID: 6866156344906863907, guid: 1c0b504a7f7800743a6735d0714f20f1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -153,5 +153,4 @@ MonoBehaviour:
   initSpeed: 8
   maxSpeed: 10
   accelerationRate: 0.1
-  destroyDistance: -11
-  spawnPoint: {x: 13, y: 0}
+  spawnPoint: 0
