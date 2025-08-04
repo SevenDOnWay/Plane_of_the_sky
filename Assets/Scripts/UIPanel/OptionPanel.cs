@@ -1,15 +1,28 @@
 using System.Runtime.InteropServices;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class OptionPanel : MonoBehaviour {
 
     [SerializeField] GameObject emailPanel;
+    [SerializeField] Slider masterSlider;
+    [SerializeField] Slider musicSlider;
+    [SerializeField] Slider sfxSlider;
 
     float masterVolume;
     float musicVolume;
     float sfxVolume;
+
+    public void OnEnable() {
+        masterVolume = PlayerDataManager.Instance.playerData.masterVolume;
+        musicVolume = PlayerDataManager.Instance.playerData.musicVolume;
+        sfxVolume = PlayerDataManager.Instance.playerData.sfxVolume;
+
+        masterSlider.value = masterVolume;
+        musicSlider.value = musicVolume;
+        sfxSlider.value = sfxVolume;
+    }
 
     public void OnClickOutSidePanel() {
         gameObject.SetActive(false);

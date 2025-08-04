@@ -1731,7 +1731,7 @@ GameObject:
   - component: {fileID: 368896504}
   - component: {fileID: 368896503}
   m_Layer: 5
-  m_Name: Slider (1)
+  m_Name: SFXSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2072,7 +2072,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &401455234
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2088,10 +2088,10 @@ RectTransform:
   - {fileID: 1331110855}
   m_Father: {fileID: 311641811}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 986.2878, y: -525.60724}
-  m_SizeDelta: {x: 1972.5756, y: 1051.2145}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &401455235
 MonoBehaviour:
@@ -2860,16 +2860,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: 65489e3e8b7f2f247bab24b88eefa846, type: 3}
-  horizontalSpeed: 100
-  verticalSpeed: 125
+  horizontalSpeed: 50
+  verticalSpeed: 75
   maxDragDistance: 100
   smoothMoveTime: 0.1
-  smoothRotateTime: 0.2
   spawnPoint: {x: -2, y: -3}
   rotationFactor: 0.25
   maxRotationAngle: 45
-  frequency: 10
-  damping: 5
+  frequency: 1.5
+  damping: 0.5
   t_TravalDistance: {fileID: 1331110856}
 --- !u!212 &488076908
 SpriteRenderer:
@@ -2942,7 +2941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50.412888, y: -50.467556}
+  m_AnchoredPosition: {x: 49.10439, y: -50.467556}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &488076910
@@ -6147,7 +6146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &890362695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7373,7 +7372,7 @@ GameObject:
   - component: {fileID: 1361087606}
   - component: {fileID: 1361087605}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: masterSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9599,6 +9598,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emailPanel: {fileID: 1121419464}
+  masterSlider: {fileID: 1361087606}
+  musicSlider: {fileID: 368896504}
+  sfxSlider: {fileID: 2006537831}
 --- !u!114 &1915930289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10278,7 +10280,7 @@ GameObject:
   - component: {fileID: 2006537831}
   - component: {fileID: 2006537830}
   m_Layer: 5
-  m_Name: Slider (2)
+  m_Name: MusicSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10497,8 +10499,6 @@ MonoBehaviour:
   accelerationRate: 0.25
   scoreText: {fileID: 1331110854}
   travelDistance: 0
-  minScoreToSpawnBoss: 2000
-  maxScoreToSpawnBoss: 3500
 --- !u!4 &2067586896
 Transform:
   m_ObjectHideFlags: 0

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.Rendering.DebugUI;
@@ -55,7 +54,7 @@ public class MenuController : MonoBehaviour {
         navBar.SetActive(false);
         game.SetActive(true);
 
-        AudioManager.Instance.PlayBackgroundMusic("event:/Background_Music/AmbientGamePlay");
+        AudioManager.Instance.PlayBackgroundMusic("event:/BackgroundMusic/AmbientGamePlay");
 
         playPanelCanvasGroup.blocksRaycasts = false;
 

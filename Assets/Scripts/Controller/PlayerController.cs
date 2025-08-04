@@ -1,14 +1,7 @@
-using System;
 using TMPro;
-using Unity.Cinemachine;
-using Unity.Mathematics;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-using UnityEngine.Rendering;
-using UnityEngine.SocialPlatforms.Impl;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
@@ -28,7 +21,6 @@ public class PlayerController : MonoBehaviour {
     [Header("Movement Config")]
     [SerializeField] float maxDragDistance = 100f;
     [SerializeField] float smoothMoveTime = 0.1f;
-    [SerializeField] float smoothRotateTime = 0.5f;
     [SerializeField] Vector2 spawnPoint = new Vector2(-2, -3);
 
 
@@ -138,12 +130,14 @@ public class PlayerController : MonoBehaviour {
         transform.rotation = Quaternion.Euler(0, 0, currentAngle);
     }
 
+    //fre 1.5 , damp 0.5
+
     float Spring(float current, float target, float frequency, float damping, float deltaTime) {
         float omega = 2 * Mathf.PI * frequency;
         float x = omega * deltaTime;
         float exp = Mathf.Exp(-damping * x);
 
-        float angle = (current - target) * exp * (Mathf.Cos(x) + damping * Mathf.Sin(x)) + target;
+        float angle = (current - target) * exp * Mathf.Cos(x) + target;
         return angle;
     }
 

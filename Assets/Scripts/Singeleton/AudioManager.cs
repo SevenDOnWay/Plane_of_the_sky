@@ -2,7 +2,6 @@ using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows.Speech;
 using static UnityEngine.Rendering.DebugUI;
 
 public class AudioManager : MonoBehaviour {
@@ -18,7 +17,7 @@ public class AudioManager : MonoBehaviour {
 
     FMOD.Studio.System fmodSystem;
 
-    private void Awake() {
+    private void Start() {
         if ( Instance != null && Instance != this ) {
             Destroy(gameObject);
             return;
@@ -30,7 +29,7 @@ public class AudioManager : MonoBehaviour {
         // Initialize audio settings or load audio clips if necessary
         InitializeFMOD();
 
-        PlayBackgroundMusic("event:/BackgroundMusic/MainTheme");
+        PlayBackgroundMusic("event:/BackgroundMusic/MainMenu");
     }
 
     void InitializeFMOD() {

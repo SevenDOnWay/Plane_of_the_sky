@@ -19,7 +19,7 @@ public class Obstacle : MonoBehaviour {
 
     void Start() {
         var spriteRenderer = GetComponent<SpriteRenderer>();
-        halfSpriteWidth = spriteRenderer.bounds.extents.x;
+        halfSpriteWidth = spriteRenderer.bounds.size.x;
         spawnPoint = WorldSizeManager.Instance.worldScreenWidth;
     }
 

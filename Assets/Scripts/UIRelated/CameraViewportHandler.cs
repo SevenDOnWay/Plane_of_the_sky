@@ -134,12 +134,12 @@ public class CameraViewportHandler : MonoBehaviour {
     }
 
     private void Update() {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 
-        if ( executeInUpdate )
-            ComputeResolution();
+//        if ( executeInUpdate )
+//            ComputeResolution();
 
-#endif
+//#endif
     }
 
     void OnDrawGizmos() {

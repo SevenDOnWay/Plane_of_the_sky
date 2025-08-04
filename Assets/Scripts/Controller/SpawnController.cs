@@ -50,8 +50,6 @@ public class SpawnController : MonoBehaviour {
         SetSpawnPoint();
     }
 
-
-
     void SetSpawnPoint() {
         spawnPointX = WorldSizeManager.Instance.worldScreenWidth;
         spawnPointY = WorldSizeManager.Instance.worldScreenHeight / 2 * padding / 100;

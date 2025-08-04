@@ -4,8 +4,6 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEditorInternal.ReorderableList;
 
 public class ParallaxBackGround : MonoBehaviour {
 
@@ -75,28 +73,21 @@ public class ParallaxBackGround : MonoBehaviour {
             obj.mountainInstances[i].transform.Translate(Vector3.left * obj.scrollSpeed * Time.deltaTime);
 
             // Check if mountain needs resetting
-            if ( obj.mountainInstances[i].transform.position.x + obj.spriteRenderers[i].bounds.extents.x < boundary ) {
+            if ( obj.mountainInstances[i].transform.position.x + obj.spriteRenderers[i].bounds.extents.x < -boundary ) {
                 ResetMountainPosition(obj.mountainInstances[i], obj.xSpawnRange, obj.baseHeight, obj.heightOffset);
             }
         }
     }
 
-    IEnumerator ResetMountainPosition( GameObject mountain, float xSpawnRange, float baseHeight, float heightOffset ) {
-        var time = Random.Range(1,5);
-        yield return new WaitForSeconds(time);
-
-
+    void ResetMountainPosition( GameObject mountain, float xSpawnRange, float baseHeight, float heightOffset ) {
         float randomX = Random.Range(0, xSpawnRange);
         float randomHeight = baseHeight + Random.Range(-heightOffset, heightOffset);
-        mountain.transform.localPosition = new Vector3(boundary + randomX, randomHeight, 1);
+        mountain.transform.position = new Vector3(boundary + randomX, randomHeight, 1);
     }
 
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(boundary, -10, 0), new Vector3(boundary, 10, 0));
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(new Vector3(boundary, -10, 0), new Vector3(boundary, 10, 0));
+        Gizmos.DrawLine(new Vector3(-boundary, -10, 0), new Vector3(boundary, 10, 0));
     }
 
 }
